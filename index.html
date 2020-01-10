@@ -152,6 +152,106 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-采药问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/10/%E9%87%87%E8%8D%AF%E9%97%AE%E9%A2%98/">采药问题</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/10/%E9%87%87%E8%8D%AF%E9%97%AE%E9%A2%98/" class="archive-article-date">
+  	<time datetime="2020-01-10T10:59:52.055Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="采药问题"><a href="#采药问题" class="headerlink" title="采药问题"></a>采药问题</h1><ul>
+<li>蓝桥杯题号：1100</li>
+<li>此问题类似于0/1背包问题</li>
+<li>题目：辰辰是个天资聪颖的孩子，他的梦想是成为世界上最伟大的医师。为此，他想拜附近最有威望的医师为师。医师为了判断他的资质，给他出了一个难题。医师把他带到一个到处都是草药的山洞里对他说：“孩子，这个山洞里有一些不同的草药，采每一株都需要一些时间，每一株也有它自身的价值。我会给你一段时间，在这段时间里，你可以采到一些草药。如果你是一个聪明的孩子，你应该可以让采到的草药的总价值最大。” </li>
+<li>输入：输入第一行有两个整数T（1 &lt;= T &lt;= 1000）和M（1 &lt;= M &lt;= 100），用一个空格隔开，T代表总共能够用来采药的时间，M代表山洞里的草药的数目。接下来的M行每行包括两个在1到100之间（包括1和100）的整数，分别表示采摘某株草药的时间和这株草药的价值。</li>
+<li>输出：输出一行，这一行只包含一个整数，表示在规定的时间内，可以采到的草药的最大总价值。</li>
+</ul>
+<h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><ol>
+<li>在有限的时间内获取最大的价值（并不是$价值/时间$的最大值！！！）</li>
+<li>分情况讨论：<ol>
+<li>若时间够：在一定的时间内取价值最大的那一个（说出来有点蠢，但是这是这个问题的核心）</li>
+<li>时间不够，采不了。</li>
+</ol>
+</li>
+<li>理解不了就画图，自己推一下立马懂了。</li>
+<li>最大的价值一定是通过一个二维数组表示出来的！</li>
+</ol>
+<h2 id="求解过程"><a href="#求解过程" class="headerlink" title="求解过程"></a>求解过程</h2><ul>
+<li>先建立一个二维数组（这个数组就是存放采药价值的最大值的，0/1背包问题的解决也必须有这个数组）<ul>
+<li>数组的大小根据问题定，本题定义$sumvalue[1001][101]$就可以了，当然可以比它大，但是不能比它小。</li>
+</ul>
+</li>
+<li>然后就是一步一步的进行分析，如图：<br><a href="采药问题.png">!aaa</a></li>
+<li>箭头所指就是进行了判断（在一定的时间内取价值最大的那一个）<ul>
+<li>代码体现：<code>sumvalue[m][t] = max(sumvalue[m-1][t-time[m]]+value[m],sumvalue[m-1][t]);</code></li>
+<li>把这个搞懂了其他的就简单多了</li>
+<li>比较把当前的放下价值大还是不放下当前价值大，意思就是它里面的顺序不一定，有可能在一定的时间内先取到了价值最小的那个（时间相同的情况下），所以要进行判断，把时间一定的情况下价值最大的那一个放进去。</li>
+<li>为什么和上一行进行比较：<ul>
+<li>因为上一行还没有当前的值，只有到了当前这一行才能有当前的值（就是药的种类没有那么多，只有那一种，而到了下一行，随着药数的增加，才有可能产生时间一定，价值比之前的价值大的数）</li>
+<li>把每一行、每一列的意义搞明白这个题就简单多了。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="总代码："><a href="#总代码：" class="headerlink" title="总代码："></a>总代码：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#define max(x,y) (x)&gt;(y)?(x):(y)</span><br><span class="line">int sumvalue[101][1001];</span><br><span class="line">int caiyao(int T,int M,int *time,int *value)&#123;</span><br><span class="line">	int t,m;</span><br><span class="line">	for(m&#x3D;1;m&lt;&#x3D;M;m++)&#123;</span><br><span class="line">		for(t&#x3D;1;t&lt;&#x3D;T;t++)&#123;</span><br><span class="line">			if(t&gt;&#x3D;time[m])&#123;</span><br><span class="line">				sumvalue[m][t] &#x3D; max(sumvalue[m-1][t-time[m]]+value[m],sumvalue[m-1][t]);</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				sumvalue[m][t] &#x3D; sumvalue[m-1][t];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	printf(&quot;%d&quot;,sumvalue[M][T]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">	int T,M;</span><br><span class="line">	int i;</span><br><span class="line">	int value[101];</span><br><span class="line">	int time[101];</span><br><span class="line">	scanf(&quot;%d%d&quot;,&amp;T,&amp;M);</span><br><span class="line">	for(i&#x3D;1;i&lt;&#x3D;M;i++)&#123;</span><br><span class="line">		scanf(&quot;%d%d&quot;,&amp;time[i],&amp;value[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	caiyao(T,M,time,value);</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/10/%E9%87%87%E8%8D%AF%E9%97%AE%E9%A2%98/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-我的第一篇博客文章" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -189,81 +289,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/01/10/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/10/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2020/01/10/hello-world/" class="archive-article-date">
-  	<time datetime="2020-01-10T10:05:41.503Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/01/10/hello-world/">展开全文 >></a>
         </p>
       
 
